@@ -1,0 +1,156 @@
+Sangey Lama
+CS 323, radix sort on base 2 and 3 assignment
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+public class Main {
+
+public static int[] createArray(int a, int b){
+        int size = b-a+1;
+        int[] array = new int[size];
+        for(int i=0; i< size; i++){
+            array[i] = a+i;
+        }
+        return array;
+}
+   public static int[] RandomizeArray(int[] arr, int n){
+        Random rgen = new Random(); 
+        for(int j=0; j<n; j++){
+            for (int i=0; i<arr.length; i++) {
+                int randomPosition = rgen.nextInt(arr.length);
+                int temp = arr[i];
+                arr[i] = arr[randomPosition];
+                arr[randomPosition] = temp;
+                }
+        }
+        return arr;
+}
+
+public static int[] convertBinary(int[] array){
+     for(int i=0; i<52; i++){
+         int dec = array[i];
+          String bin = Integer.toBinaryString(dec);
+          int Ibin = Integer.parseInt(bin);
+          array[i] = Ibin;
+     }
+     return array;
+}
+public static int[] convertB2toDec(int[] array){
+   for(int i=0; i<52; i++){
+       int bin = array[i];
+       String Sbin = Integer.toString(bin);
+       int dec = Integer.parseInt(Sbin,2);
+       array[i]=dec;
+   }
+   return array;
+} 
+  public static int[] convertBase3(int[] array) {
+    for(int i=0; i<52; i++){
+        int ret = 0, factor = 1;
+        int num = array[i];
+        while (num > 0) {
+            ret += num % 3 * factor;
+            num /= 3;
+            factor *= 10;
+        }
+        array[i]= ret;
+    }
+    return array;
+}
+public static int[] convertB3toDec(int[] array, int fromBase, int toBase){
+        for(int i=0; i<52; i++){
+            String Sbin = Integer.toString(array[i]);
+            String b3= Integer.toString(Integer.parseInt(Sbin, fromBase), toBase);
+            int dec = Integer.parseInt(b3);
+            array[i]= dec;
+        }
+        return array;
+}
+  
+  public static void radixSort(int[] input) {
+    final int RADIX = 10;
+    
+    List<Integer>[] bucket = new ArrayList[RADIX];
+    
+    for (int i = 0; i < bucket.length; i++) {
+      bucket[i] = new ArrayList<Integer>();
+    }
+
+    boolean maxLength = false;
+    int tmp = -1, placement = 1;
+    while (!maxLength) {
+      maxLength = true;
+      
+      for (Integer i : input) {
+        tmp = i / placement;
+        bucket[tmp % RADIX].add(i);
+        if (maxLength && tmp > 0) {
+          maxLength = false;
+        }
+      }
+      
+      int a = 0;
+      for (int b = 0; b < RADIX; b++) {
+        for (Integer i : bucket[b]) {
+          input[a++] = i;
+        }
+        bucket[b].clear();
+      }
+      
+      placement *= RADIX;
+    }
+  }
+  public static void main(String[] args) {
+    //Base 2
+    //Randomizing(shuffle) the array of 1 to 52 cards, 3 times and assigning to input array
+    int[] B2input = RandomizeArray(createArray(1,52),3);
+    System.out.println("   Base 2 Radix Sort  ");
+    System.out.println("Shuffled Array 3 times");
+    System.out.println(Arrays.toString(B2input));
+     System.out.println("Array Converted to Binary: Base 2");
+     convertBinary(B2input);
+    System.out.println("An Integer array before sorting");
+    System.out.println(Arrays.toString(B2input));
+
+    radixSort(B2input);
+
+    System.out.println("Sorting an Binary array using radix sort algorithm");
+    System.out.println(Arrays.toString(B2input));
+    convertB2toDec(B2input);
+     System.out.println("Converted to Decimal");
+    System.out.println(Arrays.toString(B2input));
+     System.out.println();
+
+    
+    //Base 3
+    int[] B3input = RandomizeArray(createArray(1,52),3);
+    System.out.println("   Base 3 Radix Sort  ");
+    System.out.println("Shuffled Array 3 times");
+    System.out.println(Arrays.toString(B3input));
+     System.out.println("Array Converted to Binary: Base 3");
+     convertBase3(B3input);
+    System.out.println("An Integer array before sorting");
+    System.out.println(Arrays.toString(B3input));
+
+    radixSort(B3input);
+
+    System.out.println("Sorting an Base3 array using radix sort algorithm");
+    System.out.println(Arrays.toString(B3input));
+    convertB3toDec(B3input,3,10);
+     System.out.println("Converted to Decimal");
+    System.out.println(Arrays.toString(B3input));
+
+  }
+  
+}
+
+OUTPUT:::::::::::::::::::
+
+ 
+[36, 32, 3, 7, 26, 5, 20, 6, 33, 22, 16, 23, 44, 8, 37, 43, 12, 31, 40, 38, 21, 52, 47, 2, 39,                                         
+
+
+
